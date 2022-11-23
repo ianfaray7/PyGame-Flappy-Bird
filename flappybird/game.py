@@ -34,43 +34,76 @@ def load_assets():
     return assets
 #create a game like flappy bird
 #variables Alex
-alex_x = 100
-alex_y = 350
-alex_speed = 0
-gravity = 1
-#variables pipe
-pipe_x = 500
-pipe_y = 0
+#create same game using classes
+gravity = 1 
 pipe_speed = 2
+class Alex(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('flappybird\img\sslex.png').convert_alpha()
+        self.image = pygame.transform.scale(self.image, (alex_width, alex_height))
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+        self.speedy = 0
+    def update(self):
+        self.speedy += gravity
+        self.rect.y += self.speedy
+        if self.rect.bottom > height:
+            self.rect.bottom = height
+            self.speedy = 0
+        if self.rect.top < 0:
+            self.rect.top = 0
+            self.speedy = 0
+class Pipe(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('flappybird\img\ssflappy-bird-pipe-transparent-11549930651hqzkrjyfcl.png').convert_alpha()
+        self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+    def update(self):
+        self.rect.x -= pipe_speed
+        if self.rect.right < 0:
+            self.rect.left = width
+            self.rect.y = random.randint(-200, -100)
 #--------------------
-# loop do jogo
+# initialize pygame and create window
+pygame.init()
+pygame.mixer.init()
+window = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Flappy Alex')
+clock = pygame.time.Clock()
+#--------------------
+# create game objects
+all_sprites = pygame.sprite.Group()
+alex = Alex(100, 350)
+all_sprites.add(alex)
+pipe = Pipe(500, 0)
+all_sprites.add(pipe)
+#--------------------
+# game loop
 game = True
 while game:
-    # ajusta a velocidade do jogo
-    clock = pygame.time.Clock()
-
+    # keep loop running at the right speed
     clock.tick(FPS)
-    # processa os eventos
+    # process input (events)
     for event in pygame.event.get():
-        # verifica se foi fechado
+        # check for closing window
         if event.type == pygame.QUIT:
             game = False
-        # verifica se apertou alguma tecla
+        # check for keydown
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                alex_speed = -10
-    # atualiza a posição do alex
-    alex_speed += gravity
-    alex_y += alex_speed
-    # atualiza a posição do pipe
-    pipe_x -= pipe_speed
-    # desenha o fundo na tela
+                alex.speedy = -10
+    # update
+    all_sprites.update()
+    # draw / render
     window.blit(backgorund, (0, 0))
-    # desenha o alex na tela
-    window.blit(alex, (alex_x, alex_y))
-    # desenha o pipe na tela
-    window.blit(pipe, (pipe_x, pipe_y))
-    # atualiza a tela
-    pygame.display.update()
-# finaliza a janela do jogo
+    all_sprites.draw(window)
+    # after drawing everything, flip the display
+    pygame.display.flip()
+#--------------------
 pygame.quit()
+
