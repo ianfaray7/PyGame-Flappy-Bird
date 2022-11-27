@@ -75,26 +75,38 @@ pipe = Pipe(500, 0)
 all_sprites.add(pipe)
 #--------------------
 # game loop
-game = True
-while game:
+ 
+
+def game_over():
+    pygame.quit()
+    exit()
+# loop do jogo
+def game():
+    assets = load_assets()
     clock = pygame.time.Clock()
-    # keep loop running at the right speed
-    clock.tick(FPS)
-    # process input (events)
-    for event in pygame.event.get():
-        # check for closing window
-        if event.type == pygame.QUIT:
-            game = False
-        # check for keydown
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                alex.speedy = -10
-    # update
-    all_sprites.update()
-    # draw / render
-    window.blit(backgorund, (0, 0))
-    all_sprites.draw(window)
-    # after drawing everything, flip the display
-    pygame.display.flip()
-#--------------------
-pygame.quit() # finaliza pygame
+    all_sprites = pygame.sprite.Group()
+    alex = Alex(100, 350)
+    all_sprites.add(alex)
+    pipes = pygame.sprite.Group()
+    for i in range(2):
+        pipe = Pipe(width + i * 300, random.randint(-200, -100))
+        all_sprites.add(pipe)
+        pipes.add(pipe)
+    running = True
+    while running:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    alex.speedy = -15
+        all_sprites.update()
+        hits = pygame.sprite.spritecollide(alex, pipes, False)
+        if hits:
+            running = False
+        window.blit(assets['background'], (0, 0))
+        all_sprites.draw(window)
+        pygame.display.update()
+    game_over()
+game()
