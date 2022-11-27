@@ -97,6 +97,10 @@ while game:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 alex.speedy = -10
+    
+    hits = pygame.sprite.spritecollide(alex,pipe,True)
+    if len(hits) > 0:
+        alex.kill()
     # update
     all_sprites.update()
     # draw / render
