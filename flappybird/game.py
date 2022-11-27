@@ -77,6 +77,7 @@ all_sprites.add(pipe)
 # game loop
 game = True
 while game:
+    clock = pygame.time.Clock()
     # keep loop running at the right speed
     clock.tick(FPS)
     # process input (events)
@@ -96,5 +97,4 @@ while game:
     # after drawing everything, flip the display
     pygame.display.flip()
 #--------------------
-pygame.quit()
-
+pygame.quit() # finaliza pygame
