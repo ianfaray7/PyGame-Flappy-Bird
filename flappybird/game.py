@@ -1,6 +1,7 @@
 # importa biblioteca
 import pygame
 import random
+
 #--------------------
 pygame.init()
 pygame.mixer.init()
@@ -17,19 +18,14 @@ alex_width = 60
 alex_height = 48
 pipe_width = 300
 pipe_height = 400
-
 backgorund = pygame.image.load('flappybird\img\ssbombonera_1200_4.jpg').convert()
-backgorund = pygame.transform.scale(backgorund, (width, height)) 
-alex = pygame.image.load('flappybird\img\sslex.png').convert_alpha()
-alex = pygame.transform.scale(alex, (alex_width, alex_height))
-pipe = pygame.image.load('flappybird\img\ssflappy-bird-pipe-transparent-11549930651hqzkrjyfcl.png').convert_alpha()
-pipe = pygame.transform.scale(pipe, (pipe_width, pipe_height))
+
 def load_assets():
     assets = {}
     assets['background'] = pygame.image.load('flappybird\img\ssbombonera_1200_4.jpg').convert()
     assets['alex'] = pygame.image.load('flappybird\img\sslex.png').convert_alpha()
     assets['alex'] = pygame.transform.scale(assets['alex'], (alex_width, alex_height))
-    assets['pipe'] = pygame.image.load('flappybird\img\sstrophy-11527593161wjmswjufrj.png').convert_alpha()
+    assets['pipe'] = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
     assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
     return assets
 #create a game like flappy bird
@@ -58,7 +54,7 @@ class Alex(pygame.sprite.Sprite):
 class Pipe(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('flappybird\img\ssflappy-bird-pipe-transparent-11549930651hqzkrjyfcl.png').convert_alpha()
+        self.image = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
         self.rect = self.image.get_rect()
         self.rect.centerx = x
@@ -69,41 +65,40 @@ class Pipe(pygame.sprite.Sprite):
             self.rect.left = width
             self.rect.y = random.randint(-200, -100)
 #--------------------
-# initialize pygame and create window
-pygame.init()
-pygame.mixer.init()
-window = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Flappy Alex')
-clock = pygame.time.Clock()
+# if alex collides with pipe, game over
 #--------------------
-# create game objects
-all_sprites = pygame.sprite.Group()
-alex = Alex(100, 350)
-all_sprites.add(alex)
-pipe = Pipe(500, 0)
-all_sprites.add(pipe)
-#--------------------
-# game loop
-game = True
-while game:
-    # keep loop running at the right speed
-    clock.tick(FPS)
-    # process input (events)
-    for event in pygame.event.get():
-        # check for closing window
-        if event.type == pygame.QUIT:
-            game = False
-        # check for keydown
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                alex.speedy = -10
-    # update
-    all_sprites.update()
-    # draw / render
-    window.blit(backgorund, (0, 0))
-    all_sprites.draw(window)
-    # after drawing everything, flip the display
-    pygame.display.flip()
-#--------------------
-pygame.quit()
+# gera saídas
+def game_over():
+    pygame.quit()
+    exit()
+# loop do jogo
+def game():
+    assets = load_assets()
+    clock = pygame.time.Clock()
+    all_sprites = pygame.sprite.Group()
+    alex = Alex(100, 350)
+    all_sprites.add(alex)
+    pipes = pygame.sprite.Group()
+    for i in range(2):
+        pipe = Pipe(width + i * 300, random.randint(-200, -100))
+        all_sprites.add(pipe)
+        pipes.add(pipe)
+    running = True
+    while running:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    alex.speedy = -15
+        all_sprites.update()
+        hits = pygame.sprite.spritecollide(alex, pipes, False)
+        if hits:
+            running = False
+        window.blit(assets['background'], (0, 0))
+        all_sprites.draw(window)
+        pygame.display.update()
+    game_over()
+game()
 
