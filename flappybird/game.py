@@ -1,4 +1,4 @@
-# importa biblioteca
+   # importa biblioteca
 import pygame
 import random
 
@@ -8,7 +8,7 @@ pygame.mixer.init()
 
 # gera tela
 width = 580
-height = 700
+height = 480
 window = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Flappy Alex')
 
