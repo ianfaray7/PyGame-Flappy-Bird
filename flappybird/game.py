@@ -5,7 +5,7 @@ import random
 #--------------------
 pygame.init()
 pygame.mixer.init()
-
+  
 # gera tela
 width = 580
 height = 700
@@ -64,6 +64,20 @@ class Pipe(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.rect.left = width
             self.rect.y = random.randint(-200, -100)
+class Pipe2(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
+        self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.centery = y
+    def update(self):
+        self.rect.x -= pipe_speed
+        if self.rect.right < 0:
+            self.rect.left = width
+            self.rect.y = random.randint(500, 600)
+
 #--------------------
 # if alex collides with pipe, game over
 #--------------------
@@ -72,6 +86,7 @@ all_sprites = pygame.sprite.Group()
 alex = Alex(100, 350)
 all_sprites.add(alex)
 pipe = Pipe(500, 0)
+pipe2 = Pipe2(500, 500)
 all_sprites.add(pipe)
 #--------------------
 # game loop
@@ -90,8 +105,11 @@ def game():
     pipes = pygame.sprite.Group()
     for i in range(2):
         pipe = Pipe(width + i * 300, random.randint(-200, -100))
+        pipe2 = Pipe2(width + i * 300, random.randint(500, 600))
         all_sprites.add(pipe)
+        all_sprites.add(pipe2)
         pipes.add(pipe)
+        pipes.add(pipe2)
     running = True
     while running:
         clock.tick(FPS)
