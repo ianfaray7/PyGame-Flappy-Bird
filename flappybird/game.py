@@ -1,4 +1,4 @@
-   # importa biblioteca
+ # importa biblioteca
 import pygame
 import random
 
@@ -69,6 +69,7 @@ class Pipe2(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
+        self.image = pygame.transform.flip(self.image, False, True)
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
@@ -87,6 +88,7 @@ alex = Alex(100, 350)
 all_sprites.add(alex)
 pipe = Pipe(500, 0)
 pipe2 = Pipe2(500, 500)
+
 all_sprites.add(pipe)
 #--------------------
 # game loop
@@ -102,10 +104,11 @@ def game():
     all_sprites = pygame.sprite.Group()
     alex = Alex(100, 350)
     all_sprites.add(alex)
+    pipe2 = Pipe2(random.randint(0, 500), 500)
     pipes = pygame.sprite.Group()
-    for i in range(2):
-        pipe = Pipe(width + i * 300, random.randint(-200, -100))
-        pipe2 = Pipe2(width + i * 300, random.randint(500, 600))
+    for i in range(50):
+        #pipe = Pipe(width + i * 300, random.randint(-200, -100))
+        pipe2 = Pipe2(width + i * 300, random.randint(600, 600))
         all_sprites.add(pipe)
         all_sprites.add(pipe2)
         pipes.add(pipe)
@@ -118,7 +121,7 @@ def game():
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    alex.speedy = -15
+                    alex.speedy = -12
         all_sprites.update()
         hits = pygame.sprite.spritecollide(alex, pipes, False)
         if hits:
