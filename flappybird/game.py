@@ -160,10 +160,15 @@ def game():
         pygame.display.update()
     while final:
         window.blit(assets['gameover'], (0,0))
+        draw_text(window, str(score), 18, width / 2, 10)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     final = False
+                if event.key == pygame.K_SPACE:
+                    running = True
+                    final = False
+                    
         pygame.display.update()
                     
     game_over()
