@@ -29,6 +29,7 @@ def load_assets():
     assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
     assets['inicial'] = pygame.image.load('flappybird\img\sstela_inicial.jpeg')
     assets['gameover'] = pygame.image.load('flappybird\img\sstela_gameover.jpeg')
+    assets['som_pulo'] = pygame.mixer.Sound('flappybird\img\X2Download.app - Super Mario - Som do pulo do Mário (128 kbps).mp3')
     return assets
 
 gravity = 1 
