@@ -116,6 +116,7 @@ def game():
         pipes.add(pipe)   
         pipes.add(pipe2)
     inicial = True
+    final = False
     while inicial:
         window.blit(assets['inicial'], (0,0))
         for event in pygame.event.get():
@@ -136,6 +137,7 @@ def game():
         hits = pygame.sprite.spritecollide(alex, pipes, False)
         if hits:
             running = False
+            final = True
         tt = pygame.time.get_ticks()
         score = tt/1000  
 
@@ -153,5 +155,12 @@ def game():
 
 
         pygame.display.update()
+    while final:
+        window.blit(assets['gameover'], (0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    final = False
+                    
     game_over()
 game()
