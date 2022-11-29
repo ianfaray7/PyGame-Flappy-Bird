@@ -1,4 +1,4 @@
- # importa biblioteca
+# importa biblioteca
 import pygame
 import random
 
@@ -28,14 +28,12 @@ def load_assets():
     assets['pipe'] = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
     assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
     return assets
-#create a game like flappy bird
-#variables Alex
-#create same game using classes
+
 gravity = 1 
 pipe_speed = 2
 class Alex(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
+    def _init_(self, x, y):
+        pygame.sprite.Sprite._init_(self)
         self.image = pygame.image.load('flappybird\img\sslex.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (alex_width, alex_height))
         self.rect = self.image.get_rect()
@@ -52,8 +50,8 @@ class Alex(pygame.sprite.Sprite):
             self.rect.top = 0
             self.speedy = 0
 class Pipe(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
+    def _init_(self, x, y):
+        pygame.sprite.Sprite._init_(self)
         self.image = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
         self.rect = self.image.get_rect()
@@ -63,10 +61,10 @@ class Pipe(pygame.sprite.Sprite):
         self.rect.x -= pipe_speed
         if self.rect.right < 0:
             self.rect.left = width
-            self.rect.y = random.randint(-200, -100)
+            #self.rect.y = random.randint(-200, -100)
 class Pipe2(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
+    def _init_(self, x, y):
+        pygame.sprite.Sprite._init_(self)
         self.image = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
         self.image = pygame.transform.flip(self.image, False, True)
@@ -77,12 +75,10 @@ class Pipe2(pygame.sprite.Sprite):
         self.rect.x -= pipe_speed
         if self.rect.right < 0:
             self.rect.left = width
-            self.rect.y = random.randint(500, 600)
+            #self.rect.y = random.randint(500, 600)
 
 #--------------------
-# if alex collides with pipe, game over
-#--------------------
-# create game objects
+
 all_sprites = pygame.sprite.Group()
 alex = Alex(100, 350)
 all_sprites.add(alex)
@@ -106,9 +102,9 @@ def game():
     all_sprites.add(alex)
     pipe2 = Pipe2(random.randint(0, 500), 500)
     pipes = pygame.sprite.Group()
-    for i in range(50):
-        #pipe = Pipe(width + i * 300, random.randint(-200, -100))
-        pipe2 = Pipe2(width + i * 300, random.randint(600, 600))
+    for i in range(2):
+        pipe = Pipe(width , random.randint(-200, -100))
+        pipe2 = Pipe2(width, random.randint(600, 600))
         all_sprites.add(pipe)
         all_sprites.add(pipe2)
         pipes.add(pipe)
