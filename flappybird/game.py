@@ -27,6 +27,8 @@ def load_assets():
     assets['alex'] = pygame.transform.scale(assets['alex'], (alex_width, alex_height))
     assets['pipe'] = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
     assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
+    assets['inicial'] = pygame.image.load('flappybird\img\tela_inicial.jpeg')
+    assets['gameover'] = pygame.image.load('flappybird\img\tela_gameover.jpeg')
     return assets
 
 gravity = 1 
