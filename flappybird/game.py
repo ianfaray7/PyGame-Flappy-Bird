@@ -96,7 +96,6 @@ all_sprites.add(pipe)
  
 
 def game_over():
-    window.blit(assets['gameover'])
     pygame.quit()
     exit()
 # loop do jogo
@@ -128,7 +127,7 @@ def game():
         all_sprites.update()
         hits = pygame.sprite.spritecollide(alex, pipes, False)
         if hits:
-            window.blit(assets['gameover'], (0,0))
+            running = False
         tt = pygame.time.get_ticks()
         score = tt/1000  
 
