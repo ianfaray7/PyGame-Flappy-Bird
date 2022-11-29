@@ -29,7 +29,7 @@ def load_assets():
     assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
     assets['inicial'] = pygame.image.load('flappybird\img\sstela_inicial.jpeg')
     assets['gameover'] = pygame.image.load('flappybird\img\sstela_gameover.jpeg')
-    assets['som_pulo'] = pygame.mixer.Sound('flappybird\img\X2Download.app - Super Mario - Som do pulo do Mário (128 kbps).mp3')
+    assets['som_pulo'] = pygame.mixer.Sound('flappybird\img\X2Download (mp3cut.net).mp3')
     return assets
 
 gravity = 1 
@@ -135,6 +135,7 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     alex.speedy = -12
+                    assets['som_pulo'].play()
         all_sprites.update()
         hits = pygame.sprite.spritecollide(alex, pipes, False)
         if hits:
