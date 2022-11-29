@@ -165,8 +165,6 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     final = False
-                if event.key == pygame.K_SPACE:
-                    running = True
                 
                     
         pygame.display.update()
