@@ -157,7 +157,7 @@ def game():
 
         pygame.display.update()
     while final:
-        window.blit(assets['gameover'], (0,200))
+        window.blit(assets['gameover'], (0,0))
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
