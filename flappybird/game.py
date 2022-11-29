@@ -115,7 +115,15 @@ def game():
         all_sprites.add(pipe2)
         pipes.add(pipe)   
         pipes.add(pipe2)
-    running = True
+    inicial = True
+    while inicial:
+        window.blit(assets['inicial'], (0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    inicial = False
+                    running = True
+                    
     while running:
         clock.tick(FPS)
         for event in pygame.event.get():
