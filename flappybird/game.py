@@ -27,8 +27,8 @@ def load_assets():
     assets['alex'] = pygame.transform.scale(assets['alex'], (alex_width, alex_height))
     assets['pipe'] = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
     assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
-    assets['inicial'] = pygame.image.load('flappybird\img\tela_inicial.jpeg')
-    assets['gameover'] = pygame.image.load('flappybird\img\tela_gameover.jpeg')
+    assets['inicial'] = pygame.image.load('flappybird\img\sstela_inicial.jpeg')
+    assets['gameover'] = pygame.image.load('flappybird\img\sstela_gameover.jpeg')
     return assets
 
 gravity = 1 
@@ -96,6 +96,7 @@ all_sprites.add(pipe)
  
 
 def game_over():
+    window.blit(assets['gameover'])
     pygame.quit()
     exit()
 # loop do jogo
@@ -127,7 +128,7 @@ def game():
         all_sprites.update()
         hits = pygame.sprite.spritecollide(alex, pipes, False)
         if hits:
-            running = False
+            window.blit(assets['gameover'], (0,0))
         tt = pygame.time.get_ticks()
         score = tt/1000  
 
