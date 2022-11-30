@@ -3,38 +3,40 @@ import pygame
 import random
 
 #--------------------
-pygame.init()
-pygame.mixer.init()
+pygame.init() # inicializa o pygame
+pygame.mixer.init() 
   
 # gera tela
-width = 580
-height = 480
-window = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Flappy Alex')
+width = 580 # largura tela
+height = 480 # altura tela
+window = pygame.display.set_mode((width, height)) # cria a tela
+pygame.display.set_caption('Flappy Alex') # nome da tela
 
 # inicia assets
-FPS = 30
-alex_width = 90
-alex_height = 68
-pipe_width = 300
-pipe_height = 400
-backgorund = pygame.image.load('flappybird\img\Rbckgu.jpg').convert()
+FPS = 30 # frames por segundo
+alex_width = 90 # largura alex
+alex_height = 68 # altura alex
+pipe_width = 300 # largura pipe
+pipe_height = 400 # altura pipe
+backgorund = pygame.image.load('flappybird\img\Rbckgu.jpg').convert() # carrega imagem de fundo
 
-def load_assets():
-    assets = {}
-    assets['background'] = pygame.image.load('flappybird\img\Rbckgu.jpg').convert()
-    assets['alex'] = pygame.image.load('flappybird\img\kisspng-king-kong-western-gorilla-ape-portable-network-gra-g (1).png').convert_alpha()
-    assets['alex'] = pygame.transform.scale(assets['alex'], (alex_width, alex_height))
-    assets['pipe'] = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
-    assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height))
-    assets['inicial'] = pygame.image.load('flappybird\img\sstela_inicial.jpeg')
-    assets['gameover'] = pygame.image.load('flappybird\img\sstela_gameover.jpeg')
+def load_assets(): # carrega assets
+    assets = {} # dicionario de assets
+    assets['background'] = pygame.image.load('flappybird\img\Rbckgu.jpg').convert() # carrega imagem de fundo
+    assets['alex'] = pygame.image.load('flappybird\img\kisspng-king-kong-western-gorilla-ape-portable-network-gra-g (1).png').convert_alpha() # carrega imagem do alex
+    assets['alex'] = pygame.transform.scale(assets['alex'], (alex_width, alex_height)) # redimensiona imagem do alex
+    assets['pipe'] = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha() # carrega imagem do pipe
+    assets['pipe'] = pygame.transform.scale(assets['pipe'], (pipe_width, pipe_height)) # redimensiona imagem do pipe
+    assets['inicial'] = pygame.image.load('flappybird\img\sstela_inicial.jpeg') # carrega imagem do pipe
+    assets['inicial'] = pygame.transform.scale(assets['inicial'], (width, height)) # redimensiona imagem do pipe
+    assets['gameover'] = pygame.image.load('flappybird\img\sstela_gameover.jpeg') # carrega imagem do pipe
+    assets['gameover'] = pygame.transform.scale(assets['gameover'], (width, height))     
     assets['som_pulo'] = pygame.mixer.Sound('flappybird\img\X2Download (mp3cut.net).mp3')
     assets['fail'] = pygame.mixer.Sound('flappybird\img\X2Download.app - Sound _Fail_ (Som de falha) (128 kbps).mp3')
     return assets
 
-gravity = 1 
-pipe_speed = 10
+gravity = 1  # gravidade
+pipe_speed = 60 # velocidade do pipe
 class Alex(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -95,6 +97,17 @@ pipe2 = Pipe2(500, 500)
 all_sprites.add(pipe)
 #--------------------
 # game loop
+def restart_game():
+    global pipe, pipe2, alex, all_sprites
+    all_sprites = pygame.sprite.Group()
+    alex = Alex(100, 350)
+    all_sprites.add(alex)
+    pipe = Pipe(500, 0)
+    pipe2 = Pipe2(500, 500)
+    all_sprites.add(pipe)
+    all_sprites.add(pipe2)
+    game()
+
  
 
 def game_over():
@@ -172,4 +185,5 @@ def game():
         pygame.display.update()
                     
     game_over()
+
 game()
