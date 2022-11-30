@@ -30,6 +30,7 @@ def load_assets():
     assets['inicial'] = pygame.image.load('flappybird\img\sstela_inicial.jpeg')
     assets['gameover'] = pygame.image.load('flappybird\img\sstela_gameover.jpeg')
     assets['som_pulo'] = pygame.mixer.Sound('flappybird\img\X2Download (mp3cut.net).mp3')
+    assets['fail'] = pygame.mixer.Sound('flappybird\img\X2Download.app - Sound _Fail_ (Som de falha) (128 kbps).mp3')
     return assets
 
 gravity = 1 
@@ -139,6 +140,7 @@ def game():
         all_sprites.update()
         hits = pygame.sprite.spritecollide(alex, pipes, False)
         if hits:
+            assets['fail'].play()
             running = False
             final = True
         tt = pygame.time.get_ticks()
