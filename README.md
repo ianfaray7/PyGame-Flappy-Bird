@@ -1,4 +1,4 @@
-# PyGame-Flappy-Bird
+# Flappy Alex the Gorilla
 Ian Faray e Vitor Tanaka
 
 O código a ser executado para jogar o jogo é o game.py
