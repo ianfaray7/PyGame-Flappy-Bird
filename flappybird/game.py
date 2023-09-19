@@ -69,42 +69,56 @@ class Pipe(pygame.sprite.Sprite): # classe pipe
         if self.rect.right < 0: # se o pipe passar da tela
             self.rect.left = width # ele volta para a tela
         
-            
-class Pipe2(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self) 
-        self.image = pygame.image.load('flappybird\img\pipe_top.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (pipe_width, pipe_height))
-        self.image = pygame.transform.flip(self.image, False, True) # inverte a imagem
-        self.rect = self.image.get_rect()
-        self.rect.centerx = x # centraliza no eixo x
-        self.rect.centery = y # centraliza no eixo y
-    def update(self):
-        #height = random.randint(500,600)
-        self.rect.x -= pipe_speed
-        if self.rect.right < 0: # se o pipe passar da tela
-            self.rect.left = width # ele volta para a tela
-            self.rect.centery =  random.randint(400, 600) #muda seu tamanho
-               
+
+
+class Pipe2(Pipe):
+        def __init__(self, x, y):
+            super().__init__(x, y)
+            self.image = pygame.transform.flip(self.image, False, True) # inverte a imagem
+        def update(self):
+            self.rect.x -= pipe_speed
+            if self.rect.right < 0: # se o pipe passar da tela
+                self.rect.left = width # ele volta para a tela
+                self.rect.centery =  random.randint(400, 600) #muda seu tamanho
+
+
+
+
 
 #--------------------
 
-all_sprites = pygame.sprite.Group() # grupo de sprites
-alex = Alex(100, 350) # cria o alex
-all_sprites.add(alex) # adiciona o alex ao grupo de sprites
-pipe = Pipe(500, 0) # cria o pipe
-pipe2 = Pipe2(500, 500) # cria o pipe 
 
-all_sprites.add(pipe) # adiciona o pipe ao grupo de sprites
+alex_x = 100 # posição inicial do alex no eixo x
+alex_y = 350 # posição inicial do alex no eixo y
+pipe_x = 500 # posição inicial do pipe no eixo x
+pipe1_y = 0 # posição inicial do pipe no eixo y
+pipe2_y = 500 # posição inicial do pipe no eixo y
+
+def carregar_elementos():
+    score = 0 # pontuação
+    assets = load_assets() # carrega os assets
+    clock = pygame.time.Clock() # cria o clock 
+    
+    all_sprites = pygame.sprite.Group() # grupo de sprites
+    alex = Alex(alex_x, alex_y) # cria o alex
+    all_sprites.add(alex) # adiciona o alex ao grupo de sprites 
+    pipe2 = Pipe2(random.randint(0, 500), pipe2_y)  # cria o pipe
+    pipes = pygame.sprite.Group() # grupo de pipes
+    assets['musica_jog'].play() # toca a musica
+    return score, assets, clock, all_sprites, alex, pipe2, pipes
+
+
+
 #--------------------
 # game loop
+
 def restart_game(): # função para reiniciar o jogo
     global pipe, pipe2, alex, all_sprites
     all_sprites = pygame.sprite.Group()
-    alex = Alex(100, 350)
+    alex = Alex(alex_x, alex_y)
     all_sprites.add(alex)
-    pipe = Pipe(500, 0)
-    pipe2 = Pipe2(500, 500)
+    pipe = Pipe(pipe_x, pipe1_y)
+    pipe2 = Pipe2(pipe_x, pipe2_y)
     all_sprites.add(pipe)
     all_sprites.add(pipe2)
     game()
@@ -116,16 +130,8 @@ def game_over(): # função para tela de game over
     exit()
 # loop do jogo
 def game(): # função do jogo
-    score = 0 # pontuação
-    assets = load_assets() # carrega os assets
-    clock = pygame.time.Clock() # cria o clock 
-    
-    all_sprites = pygame.sprite.Group() # grupo de sprites
-    alex = Alex(100, 350) # cria o alex
-    all_sprites.add(alex) # adiciona o alex ao grupo de sprites 
-    pipe2 = Pipe2(random.randint(0, 500), 500)  # cria o pipe
+    score, assets, clock, all_sprites, alex, pipe2, pipes = carregar_elementos()
     pipes = pygame.sprite.Group() # grupo de pipes
-    assets['musica_jog'].play() # toca a musica
     for i in range(1): # cria  pipes
         pipe = Pipe(width , random.randint(-200, -100))
         pipe2 = Pipe2(width, random.randint(500, 600))
